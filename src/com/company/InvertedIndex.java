@@ -11,10 +11,9 @@ package com.company;
 
 import com.sun.jdi.Value;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -63,7 +62,6 @@ public class InvertedIndex {
             }
         }
         return false;
-
     }
 
     // get the term from the inverted index
@@ -111,6 +109,50 @@ public class InvertedIndex {
             System.out.println("From InvertedIndex: " + e);
         }
     }
+
+    // Used by build
+    private String[] convertToWordArray(String line){
+        return line.split(" ");
+    }
+
+    public void build(String corpusPath){
+
+        File corpusRoot = new File(corpusPath);
+
+        // Add all words in corpus into Inverted index
+        for (File curr : corpusRoot.listFiles()){
+//            String keyword = null;
+            int docPosition = 0;
+            String docFoundIn = curr.getName();
+
+//            System.out.println(curr.getName());
+            // open corpus doc
+            Charset charset = Charset.forName("US-ASCII");
+            try (BufferedReader reader = Files.newBufferedReader(curr.toPath(), charset)) { // Use a buffered reader to read each line of the document
+                String line = null;
+                String[] words = null;
+                while ((line = reader.readLine()) != null) {    // get each line of the document
+                    words = convertToWordArray(line);
+                    // TODO: FILTER html, css AND js
+
+                    // TODO: FILTER STOPWORDS
+
+                    // TODO: stem words
+
+                    for (String keyword: words){
+                        add(keyword, new ValueObject(curr.getName(), docPosition));
+                    }
+                    docPosition += 1;
+                }
+            } catch (IOException x) {
+                System.err.format("IOException: %s%n", x);
+            }
+        }
+
+        saveInvertedIndex();
+
+    }
+
 
 
 }
