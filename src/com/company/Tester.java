@@ -54,7 +54,8 @@ public class Tester {
         Path p1 = Paths.get("./");
 //        printDir(p1);
 
-        p1 = Paths.get("./src/com/company");
+        // Path the access corpus
+        p1 = Paths.get("./src/com/resources/corpus");
         printDir(p1);
     }
 
@@ -64,8 +65,18 @@ public class Tester {
 
 //        testBuildInvertedIndex();
 
-        testdir();
+//        testdir();
 
+        // Testing Convert word to array
+//        BuildInvertedIndex bii = new BuildInvertedIndex();
+//        for(String a: bii.convertToWordArray("Here is a line")){
+//            System.out.println(a);
+//        }
+
+        InvertedIndex ii = new InvertedIndex();
+        ii.loadInvertedIndex();
+//        ii.queryAllOccurences("muscle");
+        ii.dump();
 
 
     }

@@ -9,7 +9,8 @@ public class Main {
 
         System.out.println("Hello World");
 
-
+        BuildInvertedIndex bii = new BuildInvertedIndex();
+        bii.build(args[0]);
 
 
     }
