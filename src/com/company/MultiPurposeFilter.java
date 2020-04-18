@@ -23,9 +23,7 @@ public class MultiPurposeFilter {
             save();
             }catch(Exception e){
             System.err.println("From MultiPurposeFilter: During build: " + e);
-
         }
-
     }
 
     public void save(){
