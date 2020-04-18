@@ -33,9 +33,6 @@ public class Tester {
         System.out.println(ii.queryIsInDoc("some", "SomeDoc"));
     }
 
-    public static void testBuildInvertedIndex(){
-
-    }
 
     public static void printDir(Path p){
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(p)) {
@@ -59,27 +56,33 @@ public class Tester {
         printDir(p1);
     }
 
-    public static void main(String[] args){
-//        testValueObject(); // need to check if it is able to be serialized
-//        testInvertedIndex();
+    // Currently able to load stopword hashtable on construction
+    public static void testMultiPurposeFilter(){
+        MultiPurposeFilter mpf = new MultiPurposeFilter();
+//        mpf.build();
+        mpf.dump();
+    }
 
-//        testBuildInvertedIndex();
-
-//        testdir();
-
-        // Testing Convert word to array
-//        BuildInvertedIndex bii = new BuildInvertedIndex();
-//        for(String a: bii.convertToWordArray("Here is a line")){
-//            System.out.println(a);
-//        }
-
+    public static void testQueryAll(){
         InvertedIndex ii = new InvertedIndex();
         ii.loadInvertedIndex();
-//        ii.queryAllOccurences("muscle");
+        ii.queryAllOccurences("muscle");
         ii.dump();
+    }
 
-
+    public static void testIsInStopwordTable(){
+        MultiPurposeFilter mpf = new MultiPurposeFilter();
+        System.out.println(mpf.isStopwordToBeFiltered("a"));
+        System.out.println(mpf.isStopwordToBeFiltered("alphabet"));
     }
 
 
+    public static void main(String[] args){
+//        testValueObject(); // need to check if it is able to be serialized
+//        testInvertedIndex();
+//        testdir();
+//        testIsInStopwordTable();
+
+
+    }
 }

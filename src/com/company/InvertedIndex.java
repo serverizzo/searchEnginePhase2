@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
+import java.lang.Object.*;
 
 // TODO: 4/15/2020 | Serialize and deserialize Inverted Index for storing and future use
 
@@ -115,15 +116,15 @@ public class InvertedIndex {
         return line.split(" ");
     }
 
+
     public void build(String corpusPath){
 
         File corpusRoot = new File(corpusPath);
+        MultiPurposeFilter filter = new MultiPurposeFilter();
 
         // Add all words in corpus into Inverted index
         for (File curr : corpusRoot.listFiles()){
-//            String keyword = null;
             int docPosition = 0;
-            String docFoundIn = curr.getName();
 
 //            System.out.println(curr.getName());
             // open corpus doc
@@ -131,26 +132,23 @@ public class InvertedIndex {
             try (BufferedReader reader = Files.newBufferedReader(curr.toPath(), charset)) { // Use a buffered reader to read each line of the document
                 String line = null;
                 String[] words = null;
-                while ((line = reader.readLine()) != null) {    // get each line of the document
-                    words = convertToWordArray(line);
-                    // TODO: FILTER html, css AND js
-
-                    // TODO: FILTER STOPWORDS
-
-                    // TODO: stem words
-
+                while ((line = reader.readLine()) != null) {                    // get each line of the document
+                    words = convertToWordArray(line);                           // convert to line array to use in enhanced for loop
                     for (String keyword: words){
-                        add(keyword, new ValueObject(curr.getName(), docPosition));
+                        if(filter.isCodeToBeFiltered(keyword)){continue;}       // filter code
+                        docPosition += 1;
+                        keyword.toLowerCase();                                  // normalize keyword
+                        if(filter.isStopwordToBeFiltered(keyword)){continue;}   // filter stopwords
+                        //stem word
+
+                        add(keyword, new ValueObject(curr.getName(), docPosition)); // add
                     }
-                    docPosition += 1;
                 }
             } catch (IOException x) {
                 System.err.format("IOException: %s%n", x);
             }
         }
-
         saveInvertedIndex();
-
     }
 
 
