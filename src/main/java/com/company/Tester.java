@@ -46,12 +46,14 @@ public class Tester {
 
     public static void testdir(){
         // Current directory is always the root i.e. phase 2.1. (contents are .idea, out, phase2.1.iml, src)
+        // unless we are trying to run from the cmd. In this case, it is the current directory.
+            //e.g. if we try to run a class
         Path p1 = Paths.get("./");
-//        printDir(p1);
+        printDir(p1);
 
         // Path the access corpus
-        p1 = Paths.get("./src/main/java/com/resources/corpus");
-        printDir(p1);
+//        p1 = Paths.get("./src/main/java/com/resources/corpus");
+//        printDir(p1);
     }
 
     // Currently able to load stopword hashtable on construction
@@ -78,8 +80,8 @@ public class Tester {
     public static void main(String[] args){
 //        testValueObject(); // need to check if it is able to be serialized
 //        testInvertedIndex();
-//        testdir();
-        testIsInStopwordTable();
+        testdir();
+//        testIsInStopwordTable();
 
 
     }

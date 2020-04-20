@@ -1,5 +1,6 @@
 package com.company;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +19,7 @@ public class Main {
             System.out.println("Printing from Main: Console interface exception caught: " + e);
         }
 
-
+        System.out.println("Finished");
 
 
     }
