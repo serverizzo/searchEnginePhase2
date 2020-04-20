@@ -16,7 +16,7 @@ public class Main {
         try{
             c.run();
         }catch (Exception e){
-            System.out.println("Printing from Main: Console interface exception caught: " + e);
+            System.err.println("Printing from Main: Console interface exception caught: " + e);
         }
 
         System.out.println("Finished");

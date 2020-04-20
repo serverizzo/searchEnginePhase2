@@ -18,5 +18,9 @@ public class ValueObject implements Serializable {
         return val[0] + " " + val[1];
     }
 
+    public String docFoundIn(){
+        return val[0];
+    }
+
 
 }

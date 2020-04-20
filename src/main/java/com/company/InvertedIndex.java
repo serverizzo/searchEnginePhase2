@@ -36,6 +36,27 @@ public class InvertedIndex {
         }
     }
 
+    public void queryNumberOfOccurences(String keyWord){
+        ArrayList<ValueObject> occurences = query(keyWord);
+        if (occurences.size() == 0){
+            return;
+        }
+
+        Object[] objArr = occurences.toArray();
+        String currDoc = null;
+        int countOccurances = 1;
+        for (Object e : objArr) {
+            ValueObject ve = (ValueObject) e;
+            String previousDoc = currDoc;
+            currDoc = ve.docFoundIn();
+            countOccurances += 1;
+            if (!currDoc.equals(previousDoc)){
+                System.out.println( keyWord + " occurs in doc " + previousDoc + " " + countOccurances + " times." );
+                countOccurances = 1;
+            }
+        }
+    }
+
     public void queryAllOccurences(String keyWord){
         ArrayList<ValueObject> occurences = query(keyWord);
         if (occurences.size() == 0){
@@ -99,15 +120,15 @@ public class InvertedIndex {
         }
     }
 
-    public void loadInvertedIndex(){
-        try{
+    public void loadInvertedIndex() throws Exception{
+//        try{
             FileInputStream fis = new FileInputStream("./src/main/java/com/savedInvertedIndex/serializedInvertedIndex.txt");
             ObjectInputStream ois = new ObjectInputStream(fis);
             ht = (Hashtable<String, ArrayList<ValueObject>>)ois.readObject();
-        }
-        catch(Exception e){
-            System.err.println("From InvertedIndex: loadInvertedIndex: " + e);
-        }
+//        }
+//        catch(Exception e){
+//            System.err.println("From InvertedIndex: loadInvertedIndex: " + e);
+//        }
     }
 
     // Used by build
@@ -122,6 +143,8 @@ public class InvertedIndex {
         MultiPurposeFilter filter = new MultiPurposeFilter();
         PorterStemmer ps = new PorterStemmer();
 
+
+        System.out.println(corpusRoot.listFiles());
         // Add all words in corpus into Inverted index
         for (File curr : corpusRoot.listFiles()){
             int docPosition = 0;

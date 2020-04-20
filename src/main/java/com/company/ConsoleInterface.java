@@ -13,8 +13,13 @@ public class ConsoleInterface {
         PorterStemmer ps = new PorterStemmer();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input = "";
-        System.out.println("loading default inverted index (assuming it has already been built). Please wait...");
-        ii.loadInvertedIndex();
+        System.out.println("Loading default inverted index (assuming it has already been built). Please wait...");
+        try{ii.loadInvertedIndex();}
+        catch(Exception e){
+            System.err.println("From ConsoleInterface: From run: Error, cannot load serialized invertedIndex. Rebuilding.");
+            ii.build("./src/main/java/com/resources/corpus");
+        }
+
         System.out.println("Beginning console interface. Type quit to terminate or help for help");
         while (!input.equals("quit")){
             input = reader.readLine();
@@ -39,14 +44,29 @@ public class ConsoleInterface {
             // query all occurances
             else if (input.equals("-q")){
                 System.out.println("Enter word you would like to query");
-                String in = reader.readLine();
+                String queryIn = reader.readLine();
+
+                // stem query
                 System.out.println("Would you like to stem your query? [y/n]");
-                while (!in.equals("y") || !in.equals("n")){
+                String decision = reader.readLine();
+                while (!decision.equals("y") && !decision.equals("n")){
                     System.out.println("Please enter either y or n");
-                    in = reader.readLine();
+                    decision = reader.readLine();
                 }
-                if (in.equals("y")){ii.queryAllOccurences(ps.stem(in));}
-                else{ii.queryAllOccurences(in);}
+                if (decision.equals("y")){ queryIn = ps.stem(queryIn);}
+
+                // Select query type
+                System.out.println("Would you like to \n " +
+                        "1. See the number of times it occurs in a doc \n " +
+                        "2. See all occurences (positions and doc)");
+                decision = reader.readLine();
+                while (!decision.equals("1") && !decision.equals("2")){
+                    System.out.println("Unrecognized input, please enter either 1 or 2");
+                    decision = reader.readLine();
+                }
+                if (decision.equals("1")){ii.queryNumberOfOccurences(queryIn);}
+                else if (decision.equals("2")){ii.queryAllOccurences(queryIn);}
+
             }
 
             // help

@@ -49,11 +49,11 @@ public class Tester {
         // unless we are trying to run from the cmd. In this case, it is the current directory.
             //e.g. if we try to run a class
         Path p1 = Paths.get("./");
-        printDir(p1);
+//        printDir(p1);
 
         // Path the access corpus
-//        p1 = Paths.get("./src/main/java/com/resources/corpus");
-//        printDir(p1);
+        p1 = Paths.get("./src/main/java/com/resources/corpus");
+        printDir(p1);
     }
 
     // Currently able to load stopword hashtable on construction
@@ -63,12 +63,12 @@ public class Tester {
         mpf.dump();
     }
 
-    public static void testQueryAll(){
-        InvertedIndex ii = new InvertedIndex();
-        ii.loadInvertedIndex();
-        ii.queryAllOccurences("muscle");
-        ii.dump();
-    }
+//    public static void testQueryAll(){
+//        InvertedIndex ii = new InvertedIndex();
+//        ii.loadInvertedIndex();
+//        ii.queryAllOccurences("muscle");
+//        ii.dump();
+//    }
 
     public static void testIsInStopwordTable(){
         MultiPurposeFilter mpf = new MultiPurposeFilter();
@@ -76,12 +76,20 @@ public class Tester {
         System.out.println(mpf.isStopwordToBeFiltered("alphabet"));
     }
 
+    public static void buildInvertedIndex(){
+        InvertedIndex ii = new InvertedIndex();
+        ii.build("./src/main/java/com/resources/corpus");
+    }
+
 
     public static void main(String[] args){
 //        testValueObject(); // need to check if it is able to be serialized
 //        testInvertedIndex();
-        testdir();
+//        testdir();
 //        testIsInStopwordTable();
+
+        buildInvertedIndex();
+
 
 
     }
