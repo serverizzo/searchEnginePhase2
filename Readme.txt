@@ -5,4 +5,4 @@ Launch application:
     to start the application
 
 
-Note: Application is terminal based. Type help for options.
+Note: Application is terminal based. Type help for options when prompted.
